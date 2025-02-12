@@ -1,2 +1,47 @@
 # nostr-silent-payments-directory
 Silent Payments Nostr Directory with On-chain zaps using BTC, LBTC and L-USDt
+
+There is demonstrated demand for re-usable payment codes for Bitcoin payments. LNURL, Bolt12 and BIP47 have had varying degrees of adoption and success. But generally, I think these are features Bitcoin users find attractive. This is a concept that has gained popularity in the fiat fintech world. Think of cashtags in cashapp, paypal addresses, and even SINPE phone numbers in Costa Rica. People prefer to interact with short aliases rather than bank accounts and public keys. 
+
+The case of BIP47 is interesting. I did not get a lot of traction outside of Samourai Wallet. I believe the reason for Samourai’s success was the concept of Paynym, a directory for BIP47 payment codes which abstracted the payment code with a memorable alias. As we have seen with Samourai, a centralized director of re-usable payment codes is fragile and not-sustainable. 
+
+Nostr seems a well-suited alternative to a centralized payment code directory. Indeed, an undeniable key feature of nostr is Zaps. The user experience to send money to anyone using their nostr pubkey as the payment destination has proven to be a success.
+
+I believe that we need alternatives to Lightning Network for payments on Nostr. I don’t need to go into details and even statistics. I think it is generally accepted that most lightning payments are being performed via custodial wallets and that self-custodial lightning has significant operational and user experience issues. Self-custodial bitcoin network transactions do not suffer from these issues. Liquid network transactions also do not suffer from these issues. 
+
+What I propose is a NIP that allows nostr users to publish a silent payment address as part of their nostr profile. To pay someone else, simply retrieve the event from an npub that published the silent payment address and derive a new Bitcoin address. The nostr network itself because the silent payments directory. 
+
+To create a Zap-like experience, here is what I propose:
+Bob publishes a Bitcoin or Liquid network silent payment address. Bob can also specify what kind of assets he wishes to accept as payments (i.e. BTC, L-BTC and L-USDt)
+Alice requests silent payment address from Bob’s npub
+Alice derives a Bitcoin address or Liquid address from Bob’s silent payments addresses
+Alice sends a payment to that address
+Alice sends a DM to Bob telling bob “I sent you (x) amount to your address, here is the txid”
+Bob’s wallet scans for the payment, and checks that he indeed got a transaction id with that amount. He can safely assume that the payment is indeed from Alice.
+While it is not necessary to broadcast this to the entire network for privacy, Alice can also publish this event openly on the Nostr Network.
+Bob can acknowledge that he indeed got the payment from Alice.
+
+Note that even without publishing it openly on the network, it is useful for Alice to be able to tell bob via DM that she paid Bob. Otherwise, Bob would not know who the payment is form.
+
+The drawback of on-chain payments is of course that Bitcoin network fees are expensive. However, this can be solved by using the Liquid Network.
+
+The Liquid network has gained a lot of traction. There are multiple wallets and SDKs that have integrated it:
+Green
+Bull Bitcoin
+Aqua
+CoinOS
+BTCPay Server
+Breez SDK
+Helm
+Marina
+
+In order to make this proposal work, we need to port the Silent Payments concept to Liquid.
+
+A cool benefit of this is that it would enable USDt-denominated payments. While I am not a fan of fiatcoins personally, I think its undeniable that many people are. L-USDt has some interesting characteristics, notably that because of Confidential Transactions and Payjoin it offers some good privacy, and compared to the other blockchains Liquid is orders of magnitude more censorship-resistant.
+
+The end result is that a Bitcoin wallet can integrate nostr and offer a payments UX where the sender will select a npub from his contact list with a username and simple “send an on-chain payment to that username”. A really good UX can be achieved without a custodial wallet and without the hassle of self-custodial lightning. 
+
+Bull Bitcoin is willing and able to support this initiave, an idea by myself (Francis Pouliot).
+
+
+
