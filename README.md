@@ -1,11 +1,19 @@
 # nostr-silent-payments-directory
 Silent Payments Nostr Directory with On-chain zaps using BTC, LBTC and L-USDt
 
-There is demonstrated demand for re-usable payment codes for Bitcoin payments. LNURL, Bolt12 and BIP47 have had varying degrees of adoption and success. But generally, I think these are features Bitcoin users find attractive. This is a concept that has gained popularity in the fiat fintech world. Think of cashtags in cashapp, paypal addresses, and even SINPE phone numbers in Costa Rica. People prefer to interact with short aliases rather than bank accounts and public keys. 
+There is demonstrated demand for re-usable payment codes for Bitcoin payments. LNURL, Bolt12 and BIP47 have had varying degrees of adoption and success. These are features Bitcoin users generally find attractive. This is a concept that has gained popularity in the fiat fintech world. Think of cashtags in cashapp, paypal addresses, and even SINPE phone numbers in Costa Rica. People prefer to interact with short aliases rather than bank accounts and public keys. 
 
-The case of BIP47 is interesting. It did not get a lot of traction outside of Samourai Wallet. I believe the reason for Samourai’s success was the concept of Paynym, a directory for BIP47 payment codes which abstracted the payment code with a memorable alias. As we have seen with Samourai, a centralized director of re-usable payment codes is fragile and not sustainable. 
+Reusable payment addresses are useful for:
+- donation pages 
+- mining pool payouts 
+- Bitcoin exchange withdrawals 
+- payroll 
 
-Nostr seems a well-suited alternative to a centralized payment code directory. Indeed, an undeniable key feature of nostr is Zaps. The user experience to send money to anyone using their nostr pubkey as the payment destination has proven to be a success.
+For mainnent Bitcoin transactions ("on-chain") they act as an alternative to reused Bitcoin addresses which are extremely bad for privacy. 
+
+The case of BIP47 is interesting. It did not get a lot of traction outside of Samourai Wallet. The reason for Samourai’s success was the concept of Paynym, a directory for BIP47 payment codes which abstracted the payment code with a memorable alias. As we have seen with Samourai, a centralized director of re-usable payment codes is fragile and not sustainable. 
+
+Nostr seems a well-suited alternative to a centralized payment code directory. Indeed, an undeniable key feature of nostr is Zaps. The user experience to send money to anyone using their nostr pubkey as the payment destination has proven to be a success. The Nostr network acts as a lightning network address director so that Bitcoin users do not need to request payment instructions from another Nostr user they wish to pay, they can just query the network of Nostr relays to find an event which maps a Lightning Network address to a nostr public key.
 
 I believe that we need alternatives to Lightning Network for payments on Nostr. I don’t need to go into details and even statistics. I think it is generally accepted that most lightning payments are being performed via custodial wallets and that self-custodial lightning has significant operational and user experience issues. Self-custodial bitcoin network transactions do not suffer from these issues. Liquid network transactions also do not suffer from these issues. 
 
@@ -13,7 +21,8 @@ What I propose is a NIP that allows nostr users to publish a silent payment addr
 
 To create a Zap-like experience, here is what I propose:
 - Bob publishes a Bitcoin or Liquid network silent payment address. Bob can also specify what kind of assets he wishes to accept as payments (i.e. BTC, L-BTC and L-USDt)
-- Alice requests silent payment address from Bob’s npub
+- This could even work with Ark, assuming Ark also implements silent payments addresses. 
+- Alice requests silent payment address from Bob’s npub from the network of Nostr relays and looking for the specific event type that maps Bob's public key to his silent payments address.
 - Alice derives a Bitcoin address or Liquid address from Bob’s silent payments addresses
 - Alice sends a payment to that address
 - Alice sends a DM to Bob telling bob “I sent you (x) amount to your address, here is the txid”
